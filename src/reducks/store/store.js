@@ -3,7 +3,8 @@ import {
   combineReducers,
   applyMiddleware
 } from 'redux';
-import { connectRouter, routerMiddleware } from 'connected-react-router'; 
+import { connectRouter, routerMiddleware } from 'connected-react-router';
+import thunk from 'redux-thunk';
 
 // import { ProductsReducer } from '../products/reducers';
 import { UsersReducer } from '../users/reducers';
@@ -14,7 +15,10 @@ const createStore = (history) => {
       router: connectRouter(history),
       users: UsersReducer,
     }),
-    applyMiddleware(routerMiddleware(history))
+    applyMiddleware(
+      routerMiddleware(history),
+      thunk
+    )
   );
 }
 
