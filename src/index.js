@@ -9,7 +9,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 const history = History.createBrowserHistory();
-export const store = createStore();
+export const store = createStore(history);
 
 ReactDOM.render(
   <React.StrictMode>
