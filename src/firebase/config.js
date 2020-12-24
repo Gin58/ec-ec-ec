@@ -1,10 +1,10 @@
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 export const firebaseConfig = {
-  apiKey: "AIzaSyBa7QVhbEnPji6_N55QB6qXXXBpaTWia8I",
-  authDomain: "ec-app-f3384.firebaseapp.com",
-  projectId: "ec-app-f3384",
-  storageBucket: "ec-app-f3384.appspot.com",
-  messagingSenderId: "13038288789",
-  appId: "1:13038288789:web:45c6cb43d875ee8043009c",
-  measurementId: "G-NTZR3PLRXK"
+  apiKey: `${process.env.REACT_APP_FIREBASE_API_KEY}`,
+  authDomain: `${process.env.REACT_APP_FIREBASE_AUTH_DOMAIN}`,
+  projectId: `${process.env.REACT_APP_FIREBASE_PROJECT_ID}`,
+  storageBucket: `${process.env.REACT_APP_FIREBASE_STORAGE_BUCKET}`,
+  messagingSenderId: `${process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID}`,
+  appId: `${process.env.REACT_APP_FIREBASE_APP_ID}`,
+  measurementId: `${process.env.REACT_APP_FIREBASE_MEASUREMENT_ID}`
 };
