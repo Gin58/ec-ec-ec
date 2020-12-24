@@ -4,6 +4,7 @@ export const signInAction = (userState) => {
     type: "SIGN_IN",
     peyload: {
       isSignedIn: true,
+      role: userState.role,
       uid: userState.uid,
       username: userState.username
     }

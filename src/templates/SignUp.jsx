@@ -62,7 +62,7 @@ const SignUp = () => {
         type={"password"}
         onChange={inputPassword}
       />
-            <TextInput
+      <TextInput
         fullWidth={true}
         label={"パスワード（再確認)"}
         multiline={false}
