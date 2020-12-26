@@ -8,6 +8,10 @@ export const UsersReducer = (state = initialState.users, action) => {
         ...state,
         ...action.peyload
       }
+    case Actions.SIGN_OUT:
+      return {
+        ...action.peyload
+      }
     default: 
       return state
   }
