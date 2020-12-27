@@ -11,7 +11,8 @@ const ProductEdit = () => {
         [description, setDescription] = useState(''),
         [category, setCategory] = useState(''),
         [gender, setGender] = useState(''),
-        [price, setPrice] = useState('');
+        [price, setPrice] = useState(''),
+        [images, setImages] = useState([]);
 
   const inputName = useCallback((event) => {
     setName(event.target.value)
@@ -41,7 +42,10 @@ const ProductEdit = () => {
     <section>
       <h2 className="u-text__headline u-text-center">商品の登録・編集</h2>
       <div className="c-section-container">
-        <ImageArea />
+        <ImageArea
+          images={images}
+          setImages={setImages}
+        />
         <TextInput
           fullWidth={true}
           label={'商品名'}
