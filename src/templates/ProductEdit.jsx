@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { TextInput, SelectBox, PrimaryButton } from '../components/UIkit';
 import { useDispatch } from 'react-redux';
 import { saveProduct } from '../reducks/products/operations';
-import ImageArea from '../components/Products/ImageArea';
 import { db } from '../firebase/index';
+import { ImageArea, SetSizeArea }  from '../components/Products/index'
 
 const ProductEdit = () => {
   const dispatch = useDispatch();
@@ -18,7 +18,8 @@ const ProductEdit = () => {
         [category, setCategory] = useState(''),
         [gender, setGender] = useState(''),
         [price, setPrice] = useState(''),
-        [images, setImages] = useState([]);
+        [images, setImages] = useState([]),
+        [sizes, setSizes] = useState([]);
 
   const inputName = useCallback((event) => {
     setName(event.target.value)
@@ -55,6 +56,7 @@ const ProductEdit = () => {
           setPrice(data.price);
           setGender(data.gender);
           setCategory(data.category);
+          setSizes(data.sizes);
         });
     }
   }, [id])
@@ -111,11 +113,16 @@ const ProductEdit = () => {
           value={price}
           type={'number'}
         />
-        <div className='module-spacer--medium' />
+        <div className='module-spacer--small' />
+        <SetSizeArea
+          sizes={sizes}
+          setSizes={setSizes}
+        />
+        <div className='module-spacer--small' />
         <div className='center'>
           <PrimaryButton
            label={'商品を保存'}
-           onClick={() => dispatch(saveProduct(id, name, description, category, gender, price, images))}
+           onClick={() => dispatch(saveProduct(id, name, description, category, gender, price, images, sizes))}
           />
         </div>
       </div>
