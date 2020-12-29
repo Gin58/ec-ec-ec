@@ -83,34 +83,34 @@ const SetSizeArea = (props) => {
               <TableCell>数量</TableCell>
               <TableCell className={classes.iconCell} />
               <TableCell className={classes.iconCell} />
-              <TableBody>
-                {props.sizes.length > 0 && (
-                  props.sizes.map((item, i) => (
-                    <TableRow key={item.size}>
-                      <TableCell>{item.size}</TableCell>
-                      <TableCell>{item.quantity}</TableCell>
-                      <TableCell>
-                        <IconButton
-                          className={classes.iconCell}
-                          onClick={() => editSize(i, item.size, item.quantity)}
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      </TableCell>
-                      <TableCell>
-                        <IconButton
-                          className={classes.iconCell}
-                          onClick={() => deleteSize(i)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
             </TableRow>
           </TableHead>
+          <TableBody>
+            {props.sizes.length > 0 && (
+              props.sizes.map((item, i) => (
+                <TableRow key={item.size}>
+                  <TableCell>{item.size}</TableCell>
+                  <TableCell>{item.quantity}</TableCell>
+                  <TableCell>
+                    <IconButton
+                      className={classes.iconCell}
+                      onClick={() => editSize(i, item.size, item.quantity)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  </TableCell>
+                  <TableCell>
+                    <IconButton
+                      className={classes.iconCell}
+                      onClick={() => deleteSize(i)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
         </Table>
         <div>
           <TextInput
