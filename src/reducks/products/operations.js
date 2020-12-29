@@ -1,8 +1,20 @@
 import { db, FirebaseTimestamp } from '../../firebase';
 import { push } from 'connected-react-router';
-import { fetchProductsAction } from './actions';
+import { fetchProductsAction, deleteProductAction } from './actions';
 
 const productsRef = db.collection('products');
+
+export const deleteProduct = (id) => {
+  return async (dispatch, getState) => {
+
+    productsRef.doc(id).delete()
+      .then(() => {
+        const prevProducts = getState().products.list;
+        const nextProducts = prevProducts.filter(product => product.id !== id);
+        dispatch(deleteProductAction(nextProducts));
+      })
+  }
+};
 
 export const fetchProducts = () => {
   return async (dispatch) => {
@@ -16,7 +28,7 @@ export const fetchProducts = () => {
         dispatch(fetchProductsAction(productList));
       })
   }
-}
+};
 
 export const saveProduct = (id, name, description, category, gender ,price, images, sizes) => {
   return async (dispatch) => {
@@ -35,7 +47,7 @@ export const saveProduct = (id, name, description, category, gender ,price, imag
 
     if (id === '') {
       const ref = productsRef.doc();
-      const id = ref.id;
+      id = ref.id;
       data.id = id;
       data.created_at = timestamp;
     };
