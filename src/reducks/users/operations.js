@@ -1,126 +1,166 @@
-import { signInAction, signOutAction } from './actions';
-import { push } from 'connected-react-router';
-import { auth, db, FirebaseTimestamp } from '../../firebase/index';
+import {
+  signInAction,
+  signOutAction,
+  fetchProductsInCartAction,
+} from "./actions";
+import { push } from "connected-react-router";
+import { auth, db, FirebaseTimestamp } from "../../firebase/index";
+
+export const addProductToCart = (addedProduct) => {
+  return async (dispatch, getState) => {
+    const uid = getState().users.uid;
+    const cartRef = db.collection("users").doc(uid).collection("cart").doc();
+    addedProduct["cartId"] = cartRef.id;
+    await cartRef.set(addedProduct);
+    dispatch(push("/"));
+  };
+};
+
+export const fetchProductsInCart = (products) => {
+  return async (dispatch) => {
+    dispatch(fetchProductsInCartAction(products));
+  };
+};
 
 export const listenAuthState = () => {
   return async (dispatch) => {
-    return auth.onAuthStateChanged(user => {
+    return auth.onAuthStateChanged((user) => {
       if (user) {
         const uid = user.uid;
 
-        db.collection('users').doc(uid).get()
-          .then(snapshot => {
+        db.collection("users")
+          .doc(uid)
+          .get()
+          .then((snapshot) => {
             const data = snapshot.data();
 
-            dispatch(signInAction({
-              isSignedIn: true,
-              role: data.role,
-              uid: uid,
-              username: data.username
-            }));
+            dispatch(
+              signInAction({
+                isSignedIn: true,
+                role: data.role,
+                uid: uid,
+                username: data.username,
+              })
+            );
           });
       } else {
-        dispatch(push('/signin'));
+        dispatch(push("/signin"));
       }
     });
-  }
+  };
 };
 
 export const resetPassword = (email) => {
   return async (dispatch) => {
-    if (email === '') {
-      alert('必須項目が未入力です');
-      return false
+    if (email === "") {
+      alert("必須項目が未入力です");
+      return false;
     } else {
-      auth.sendPasswordResetEmail(email)
+      auth
+        .sendPasswordResetEmail(email)
         .then(() => {
-          alert('入力されたアドレスにパスワードリセット用のメールをお送りしました。');
-          dispatch(push('/signin'));
-        }).catch(() => {
-          alert('パスワードリセットに失敗しました。通信環境をお確かめください。')
+          alert(
+            "入力されたアドレスにパスワードリセット用のメールをお送りしました。"
+          );
+          dispatch(push("/signin"));
         })
+        .catch(() => {
+          alert(
+            "パスワードリセットに失敗しました。通信環境をお確かめください。"
+          );
+        });
     }
-  }
-}
+  };
+};
 
 export const signIn = (email, password) => {
   return async (dispatch) => {
     // Validation
-    if (email === '' || password === '') {
-      alert('必須項目が未入力です');
-      return false
+    if (email === "" || password === "") {
+      alert("必須項目が未入力です");
+      return false;
     }
 
-    auth.signInWithEmailAndPassword(email, password)
-      .then(result => {
-        const user = result.user;
+    auth.signInWithEmailAndPassword(email, password).then((result) => {
+      const user = result.user;
 
-        if (user) {
-          const uid = user.uid;
+      if (user) {
+        const uid = user.uid;
 
-          db.collection('users').doc(uid).get()
-            .then(snapshot => {
-              const data = snapshot.data();
+        db.collection("users")
+          .doc(uid)
+          .get()
+          .then((snapshot) => {
+            const data = snapshot.data();
 
-              dispatch(signInAction({
+            dispatch(
+              signInAction({
                 isSignedIn: true,
                 role: data.role,
                 uid: uid,
-                username: data.username
-              }));
+                username: data.username,
+              })
+            );
 
-              dispatch(push('/'));
-            });
-        }
-      })
-  }
+            dispatch(push("/"));
+          });
+      }
+    });
+  };
 };
 
 export const signUp = (username, email, password, confirmPassword) => {
   return async (dispatch) => {
     // Validation
-    if (username === '' || email === '' || password === '' || confirmPassword === '') {
-      alert('必須項目が未入力です');
-      return false
+    if (
+      username === "" ||
+      email === "" ||
+      password === "" ||
+      confirmPassword === ""
+    ) {
+      alert("必須項目が未入力です");
+      return false;
     }
 
     if (password !== confirmPassword) {
-      alert('パスワードが一致しません。もう一度お試しください');
-      return false
+      alert("パスワードが一致しません。もう一度お試しください");
+      return false;
     }
 
-    return auth.createUserWithEmailAndPassword(email, password)
-      .then(result => {
+    return auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((result) => {
         const user = result.user;
 
         if (user) {
           const uid = user.uid;
-          const timestamp = FirebaseTimestamp.now()
+          const timestamp = FirebaseTimestamp.now();
 
           const userInitialData = {
             created_at: timestamp,
             email: email,
-            role: 'customer',
+            role: "customer",
             uid: uid,
             updated_at: timestamp,
-            username: username
+            username: username,
           };
 
-          db.collection('users').doc(uid).set(userInitialData)
-          .then(() => {
-            dispatch(push('/'));
-          });
+          db.collection("users")
+            .doc(uid)
+            .set(userInitialData)
+            .then(() => {
+              dispatch(push("/"));
+            });
         }
       });
-  }
+  };
 };
 
 export const signOut = () => {
   return async (dispatch) => {
-    auth.signOut()
-        .then(() => {
-          dispatch(signOutAction());
-          dispatch(push('/signin'));
-        });
-  }
-}
+    auth.signOut().then(() => {
+      dispatch(signOutAction());
+      dispatch(push("/signin"));
+    });
+  };
+};

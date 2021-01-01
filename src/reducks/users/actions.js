@@ -1,3 +1,11 @@
+export const FETCH_PRODUCTS_IN_CART = "FETCH_PRODUCTS_IN_CART";
+export const fetchProductsInCartAction = (products) => {
+  return {
+    type: "FETCH_PRODUCTS_IN_CART",
+    peyload: products,
+  };
+};
+
 export const SIGN_IN = "SIGN_IN";
 export const signInAction = (userState) => {
   return {
@@ -6,9 +14,9 @@ export const signInAction = (userState) => {
       isSignedIn: true,
       role: userState.role,
       uid: userState.uid,
-      username: userState.username
-    }
-  }
+      username: userState.username,
+    },
+  };
 };
 
 export const SIGN_OUT = "SIGN_OUT";
@@ -17,9 +25,9 @@ export const signOutAction = () => {
     type: "SIGN_OUT",
     peyload: {
       isSignedIn: false,
-      role: '',
+      role: "",
       uid: "",
-      username: ""
-    }
-  }
+      username: "",
+    },
+  };
 };
