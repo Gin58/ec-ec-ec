@@ -1,11 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router';
-import * as History from 'history';
-import createStore from './reducks/store/store';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { ConnectedRouter } from "connected-react-router";
+import * as History from "history";
+import createStore from "./reducks/store/store";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { MuiThemeProvider } from "@material-ui/core";
+import { theme } from "./assets/theme";
 
 const history = History.createBrowserHistory();
 export const store = createStore(history);
@@ -14,11 +16,13 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <ConnectedRouter history={history}>
-        <App />
+        <MuiThemeProvider theme={theme}>
+          <App />
+        </MuiThemeProvider>
       </ConnectedRouter>
     </Provider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
