@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { db } from "../firebase";
 import { returnCodeToBr } from "../function/common";
+import { ImageSwiper } from "../components/Products";
 
 const useStyles = makeStyles((theme) => ({
   sliderBox: {
@@ -57,13 +58,15 @@ const ProductDetail = () => {
       {product && (
         <div className="p-grid__row">
           <div className={classes.sliderBox}>
+            <ImageSwiper images={product.images} />
+          </div>
+          <div className={classes.detail}>
             <h2 className="u-text__headlint">{product.name}</h2>
             <p className={classes.price}>{product.price.toLocaleString()}</p>
             <div className="module-spacer--small" />
             <div className="module-spacer--small" />
             <p>{returnCodeToBr(product.description)}</p>
           </div>
-          <div className={classes.detail}></div>
         </div>
       )}
     </section>
