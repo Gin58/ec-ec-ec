@@ -1,18 +1,23 @@
-import * as Actions from './actions';
-import initialState from '../store/initialState';
+import * as Actions from "./actions";
+import initialState from "../store/initialState";
 
 export const UsersReducer = (state = initialState.users, action) => {
   switch (action.type) {
+    case Actions.FETCH_PRODUCTS_IN_CART:
+      return {
+        ...state,
+        cart: [...action.peyload],
+      };
     case Actions.SIGN_IN:
       return {
         ...state,
-        ...action.peyload
-      }
+        ...action.peyload,
+      };
     case Actions.SIGN_OUT:
       return {
-        ...action.peyload
-      }
-    default: 
-      return state
+        ...action.peyload,
+      };
+    default:
+      return state;
   }
 };
