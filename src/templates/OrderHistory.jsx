@@ -4,6 +4,7 @@ import List from "@material-ui/core/List";
 import { makeStyles } from "@material-ui/styles";
 import { getOrdersHistory } from "../reducks/users/selectors";
 import { fetchOrdersHistory } from "../reducks/users/operations";
+import { OrderHistoryItem } from "../components/Products";
 
 const useStyles = makeStyles((theme) => ({
   orderList: {
@@ -29,11 +30,14 @@ const OrderHistory = () => {
     dispatch(fetchOrdersHistory());
   }, []);
 
-  console.log(orders);
-
   return (
     <section className="c-section-wrapin">
-      <List className={classes.orderList}></List>
+      <List className={classes.orderList}>
+        {orders.length > 0 &&
+          orders.map((order) => (
+            <OrderHistoryItem key={order.id} order={order} />
+          ))}
+      </List>
     </section>
   );
 };
