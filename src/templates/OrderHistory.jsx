@@ -25,6 +25,7 @@ const OrderHistory = () => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state);
   const orders = getOrdersHistory(selector);
+  console.log(orders);
 
   useEffect(() => {
     dispatch(fetchOrdersHistory());

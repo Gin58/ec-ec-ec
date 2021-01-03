@@ -1,6 +1,7 @@
 import React from "react";
 import Divider from "@material-ui/core/Divider";
 import { TextDetail } from "../UIkit";
+import { OrderedProducts } from "./index";
 
 const datetimeToString = (date) => {
   return (
@@ -30,9 +31,12 @@ const dateToString = (date) => {
 
 const OrderHistoryItem = (props) => {
   const order = props.order;
+  const products = order.products;
   const orderedDatetime = datetimeToString(order.updated_at.toDate());
   const shippingDate = dateToString(order.shipping_date.toDate());
   const price = "￥" + order.amount.toLocaleString();
+
+  console.log(products);
 
   return (
     <div>
@@ -41,6 +45,9 @@ const OrderHistoryItem = (props) => {
       <TextDetail label={"注文日時"} value={orderedDatetime} />
       <TextDetail label={"発送予定日"} value={shippingDate} />
       <TextDetail label={"注文金額"} value={price} />
+      {Object.keys(products).length > 0 && (
+        <OrderedProducts products={products} />
+      )}
       <div className="moduel-spacer--extra-extra-small" />
       <Divider />
     </div>
