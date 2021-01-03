@@ -2,9 +2,12 @@ import {
   signInAction,
   signOutAction,
   fetchProductsInCartAction,
+  fetchOrdersHistoryAction,
 } from "./actions";
 import { push } from "connected-react-router";
 import { auth, db, FirebaseTimestamp } from "../../firebase/index";
+
+const usersRef = db.collection("users");
 
 export const addProductToCart = (addedProduct) => {
   return async (dispatch, getState) => {
@@ -13,6 +16,26 @@ export const addProductToCart = (addedProduct) => {
     addedProduct["cartId"] = cartRef.id;
     await cartRef.set(addedProduct);
     dispatch(push("/"));
+  };
+};
+
+export const fetchOrdersHistory = () => {
+  return async (dispatch, getState) => {
+    const uid = getState().users.uid;
+    const list = [];
+
+    db.collection("users")
+      .doc(uid)
+      .collection("orders")
+      .orderBy("updated_at", "desc")
+      .get()
+      .then((snapshots) => {
+        snapshots.forEach((snapshot) => {
+          const data = snapshot.data();
+          list.push(data);
+        });
+        dispatch(fetchOrdersHistoryAction(list));
+      });
   };
 };
 
@@ -26,19 +49,26 @@ export const listenAuthState = () => {
   return async (dispatch) => {
     return auth.onAuthStateChanged((user) => {
       if (user) {
-        const uid = user.uid;
-
-        db.collection("users")
-          .doc(uid)
+        usersRef
+          .doc(user.uid)
           .get()
           .then((snapshot) => {
             const data = snapshot.data();
+            if (!data) {
+              throw new Error("ユーザーデータが存在しません。");
+            }
 
+            // Update logged in user state
             dispatch(
               signInAction({
+                customer_id: data.customer_id ? data.customer_id : "",
+                email: data.email,
                 isSignedIn: true,
+                payment_method_id: data.payment_method_id
+                  ? data.payment_method_id
+                  : "",
                 role: data.role,
-                uid: uid,
+                uid: user.uid,
                 username: data.username,
               })
             );

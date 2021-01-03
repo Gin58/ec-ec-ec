@@ -41,7 +41,7 @@ export const orderProduct = (productsInCart, amount) => {
     const userRef = db.collection("users").doc(uid);
     const timestamp = FirebaseTimestamp.now();
 
-    let products = [],
+    let products = {},
       soldOutProducts = [];
 
     const batch = db.batch();
@@ -65,7 +65,7 @@ export const orderProduct = (productsInCart, amount) => {
         }
       });
 
-      products.push = {
+      products[product.productId] = {
         id: product.productId,
         images: product.images,
         name: product.name,
